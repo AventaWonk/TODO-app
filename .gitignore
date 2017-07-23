@@ -1,0 +1,8 @@
+# .gitignore file for the TODO app
+
+# Ignore node modules folder
+/node_modules
+
+# Ignore bootstap and jQuery folders
+/public/css
+/public/js
