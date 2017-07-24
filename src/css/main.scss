@@ -1,7 +1,77 @@
-.task {
+$primary-color: #3f51b5;
+$text-color-1: white;
 
-  span {
-    font-size: 14px;
+.md-navbar {
+  background: $primary-color;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 3px 1px -2px rgba(0,0,0,.2), 0 1px 5px 0 rgba(0,0,0,.12);
+
+  .navbar-brand {
+    color: $text-color-1;
+    text-shadow: none;
+  }
+}
+
+.md-button {
+  background: $primary-color;
+  border: 0;
+  border-radius: 2px;
+  padding: 0 15px;
+  height: 35px;
+  min-width: 90px;
+  color: $text-color-1;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  font-size: 15px;
+  font-weight: 400;
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 3px 1px -2px rgba(0,0,0,.2), 0 1px 5px 0 rgba(0,0,0,.12);
+}
+
+.md-input {
+  outline: none;
+  border: 0;
+  border-bottom: 1px solid gray;
+  padding: 0 15px;
+  height: 35px;
+  letter-spacing: 0.03em;
+  font-size: 15px;
+  font-weight: 400;
+
+  &:focus {
+    border-bottom:2px solid $primary-color;
+  }
+}
+
+.md-list {
+  list-style-type: none;
+  font-size: 13px;
+  font-weight: 400;
+  padding: 0;
+
+  .item {
+    padding: 16px;
+  }
+}
+
+.md-form {
+  display: flex;
+
+  input {
+    width: 100%;
+    margin: 5px;
   }
 
+  button {
+    margin: 5px;
+  }
+}
+
+.task {
+  padding: 0 20px;
+
+  .text{
+    font-size: 16px;
+    letter-spacing: .09em;
+  }
 }

@@ -37,21 +37,18 @@ export class TaskList extends React.Component{
 
   render() {
     let tasks = this.state.tasks.map((task, i) =>
-      <li key={i}>
+      <li className="item" key={i}>
         {task}
-        <span onClick={() => this.handleTaskDeleting(i)}>Del</span>
+        <span className="glyphicon glyphicon-remove pull-right" onClick={() => this.handleTaskDeleting(i)}></span>
       </li>
     );
 
     return (
       <div>
-        <div>{tasks}</div>
-        <div>
-          <label>
-            Task:
-            <input type="text" ref={(input) => this.input = input} />
-          </label>
-          <button onClick={this.handleTaskAdding}>Add</button>
+        <ul className="md-list">{tasks}</ul>
+        <div className="md-form">
+          <input className="md-input" type="text" placeholder="Input task here..." ref={(input) => this.input = input} />
+          <button className="md-button" onClick={this.handleTaskAdding}>Add</button>
         </div>
       </div>
     );

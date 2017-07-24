@@ -5,9 +5,9 @@ export class Task extends React.Component{
 
   render() {
     return(
-      <div className="task">
-        <span>{this.props.text}</span>
-      </div>
+      <span className="task">
+        <span className="text">{this.props.text}</span>
+      </span>
     );
   }
 }
