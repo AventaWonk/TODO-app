@@ -20,10 +20,15 @@ const config = {
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        loader: 'babel-loader',
-        query: {
-  			  presets: ['es2015']
-  		  }
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              presets: ['es2015'],
+              plugins: ["transform-react-jsx"]
+            }
+          }
+        ]
       },
       {
         test: /\.scss$/,
@@ -36,7 +41,13 @@ const config = {
               }
             },
             {
-              loader: 'postcss-loader'
+              loader: 'postcss-loader',
+              options: {
+                plugins: [
+                  require('precss'),
+                  require('autoprefixer'),
+                ]
+              }
             }
           ],
           fallback: "style-loader"
