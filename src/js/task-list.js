@@ -6,7 +6,16 @@ export class TaskList extends React.Component{
   constructor(props) {
     super(props);
     this.state = {
-      tasks: [],
+      tasks: [
+        {
+          text: "Task #1",
+          isDone: true
+        },
+        {
+          text: "Task #2",
+          isDone: false
+        },
+      ],
     };
     this.handleTaskAdding = this.handleTaskAdding.bind(this);
   }
@@ -14,7 +23,10 @@ export class TaskList extends React.Component{
   handleTaskAdding() {
     let newTasksState = this.state.tasks.slice();
     newTasksState.push(
-      <Task text={this.input.value}/>
+      {
+        text: this.input.value,
+        isDone: false
+      }
     );
     this.setState({
       tasks: newTasksState,
@@ -35,13 +47,34 @@ export class TaskList extends React.Component{
     });
   }
 
+  handleTaskDone(index) {
+    let newTasksState = this.state.tasks.slice();
+    for (var i = 0; i < newTasksState.length; i++) {
+      if (i == index) {
+        newTasksState[i].isDone = true;
+        break;
+      }
+    }
+    this.setState({
+      tasks: newTasksState,
+    });
+  }
+
   render() {
-    let tasks = this.state.tasks.map((task, i) =>
-      <li className="item" key={i}>
-        {task}
-        <span className="glyphicon glyphicon-remove pull-right" onClick={() => this.handleTaskDeleting(i)}></span>
-      </li>
-    );
+    let tasks = this.state.tasks.map((task, i) => {
+
+      return (
+        <li className="item" key={i}>
+          <Task text={task.text} isDone={task.isDone}/>
+          <span className="control-buttons">
+            <span className="glyphicon glyphicon-remove pull-right md-glyphicon" onClick={() => this.handleTaskDeleting(i)}></span>
+            {!task.isDone &&
+              <span className="glyphicon glyphicon-ok pull-right md-glyphicon" onClick={() => this.handleTaskDone(i)}></span>
+            }
+          </span>
+        </li>
+      );
+    });
 
     return (
       <div>

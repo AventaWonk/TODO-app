@@ -31,7 +31,7 @@ $text-color-1: white;
 .md-input {
   outline: none;
   border: 0;
-  border-bottom: 1px solid gray;
+  border-bottom: 1px solid #c3c3c3;
   padding: 0 15px;
   height: 35px;
   letter-spacing: 0.03em;
@@ -45,13 +45,7 @@ $text-color-1: white;
 
 .md-list {
   list-style-type: none;
-  font-size: 13px;
-  font-weight: 400;
   padding: 0;
-
-  .item {
-    padding: 16px;
-  }
 }
 
 .md-form {
@@ -67,6 +61,19 @@ $text-color-1: white;
   }
 }
 
+.md-glyphicon {
+  padding: 3px 0px 0px 17px;
+  cursor: pointer;
+}
+
+.item {
+  padding: 16px;
+
+  .control-buttons {
+    font-size: 16px;
+  }
+}
+
 .task {
   padding: 0 20px;
 
@@ -74,4 +81,8 @@ $text-color-1: white;
     font-size: 16px;
     letter-spacing: .09em;
   }
+}
+
+.done{
+  color: green;
 }
