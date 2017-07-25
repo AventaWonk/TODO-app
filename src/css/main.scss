@@ -21,6 +21,23 @@ body {
       font-weight: 400;
     }
   }
+
+  .md-navbar-nav {
+
+    .md-navbar-nav-logo {
+      width: 60px;
+      padding-top: 11px;
+      padding-bottom: 5px;
+
+      &:hover {
+        background: 0;
+      }
+      
+      &:focus {
+        background: 0;
+      }
+    }
+  }
 }
 
 .md-button {

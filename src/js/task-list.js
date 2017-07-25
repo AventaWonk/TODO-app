@@ -21,17 +21,19 @@ export class TaskList extends React.Component{
   }
 
   handleTaskAdding() {
-    let newTasksState = this.state.tasks.slice();
-    newTasksState.push(
-      {
-        text: this.input.value,
-        isDone: false
-      }
-    );
-    this.setState({
-      tasks: newTasksState,
-    });
-    this.input.value = "";
+    if (this.input.value) {
+      let newTasksState = this.state.tasks.slice();
+      newTasksState.push(
+        {
+          text: this.input.value,
+          isDone: false
+        }
+      );
+      this.setState({
+        tasks: newTasksState,
+      });
+      this.input.value = "";
+    }
   }
 
   handleTaskDeleting(index) {
@@ -60,6 +62,12 @@ export class TaskList extends React.Component{
     });
   }
 
+  handleKeyPress(key) {
+    if (key == 'Enter') {
+      this.handleTaskAdding();
+    }
+  }
+
   render() {
     let tasks = this.state.tasks.map((task, i) => {
 
@@ -77,7 +85,7 @@ export class TaskList extends React.Component{
     });
 
     return (
-      <div>
+      <div onKeyPress={event => this.handleKeyPress(event.key)}>
         <ul className="md-list">{tasks}</ul>
         <div className="md-form">
           <input className="md-input" type="text" placeholder="Input task here..." ref={(input) => this.input = input} />
