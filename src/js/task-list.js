@@ -6,6 +6,8 @@ export class TaskList extends React.Component{
   constructor(props) {
     super(props);
     this.state = {
+      isButtonDisabled: true,
+      taskInput: "",
       tasks: [
         {
           text: "Task #1",
@@ -17,22 +19,24 @@ export class TaskList extends React.Component{
         },
       ],
     };
+    this.handleTaskInputTextChange = this.handleTaskInputTextChange.bind(this);
     this.handleTaskAdding = this.handleTaskAdding.bind(this);
   }
 
   handleTaskAdding() {
-    if (this.input.value) {
+    if (this.state.taskInput) {
       let newTasksState = this.state.tasks.slice();
       newTasksState.push(
         {
-          text: this.input.value,
+          text: this.state.taskInput,
           isDone: false
         }
       );
       this.setState({
         tasks: newTasksState,
+        taskInput: "",
+        isButtonDisabled: true,
       });
-      this.input.value = "";
     }
   }
 
@@ -62,6 +66,13 @@ export class TaskList extends React.Component{
     });
   }
 
+  handleTaskInputTextChange(input) {
+    this.setState({
+      taskInput: input.target.value,
+      isButtonDisabled: input.target.value ? false : true,
+    });
+  }
+
   handleKeyPress(key) {
     if (key == 'Enter') {
       this.handleTaskAdding();
@@ -88,8 +99,8 @@ export class TaskList extends React.Component{
       <div onKeyPress={event => this.handleKeyPress(event.key)}>
         <ul className="md-list">{tasks}</ul>
         <div className="md-form">
-          <input className="md-input" type="text" placeholder="Input task here..." ref={(input) => this.input = input} />
-          <button className="md-button" onClick={this.handleTaskAdding}>Add</button>
+          <input className="md-input" type="text" placeholder="Input task here..." value={this.state.taskInput} onChange={this.handleTaskInputTextChange}  />
+          <button className="md-button" disabled={this.state.isButtonDisabled} onClick={this.handleTaskAdding}>Add</button>
         </div>
       </div>
     );
