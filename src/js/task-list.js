@@ -1,5 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import fetch from 'isomorphic-fetch';
+import 'es6-promise/auto';
 import {Task} from './task'
 
 export class TaskList extends React.Component{
@@ -8,30 +10,86 @@ export class TaskList extends React.Component{
     this.state = {
       isButtonDisabled: true,
       taskInput: "",
-      tasks: [
-        {
-          text: "Task #1",
-          isDone: true
-        },
-        {
-          text: "Task #2",
-          isDone: false
-        },
-      ],
+      tasks: [],
     };
     this.handleTaskInputTextChange = this.handleTaskInputTextChange.bind(this);
     this.handleTaskAdding = this.handleTaskAdding.bind(this);
+    this.handleTaskAddingDone = this.handleTaskAddingDone.bind(this);
+  }
+
+  _getTasks() {
+    fetch('http://localhost:8000/task/get')
+      .then(response => response.json())
+      .then(responseData => {
+        if (responseData.response) {
+          this.setState({
+            tasks: responseData.response,
+          });
+        } else {
+          alert('The server is temporarily unavailable')
+        }
+      });
+  }
+
+  _addTask(text, callback) {
+    fetch(`http://localhost:8000/task/add/${text}`)
+      .then(response => response.json())
+      .then(result => {
+        if (!result.response) {
+          //TODO
+        }
+        return result.response
+      })
+      .then(addedTaskId => callback(addedTaskId));
+  }
+
+  _deleteTask(id) {
+    fetch(`http://localhost:8000/task/delete/${id}`)
+      .then(response => response.json())
+      .then(result => {
+        if (!result.response) {
+          //TODO
+        }
+      });
+  }
+
+  _setDoneTask(id) {
+    fetch(`http://localhost:8000/task/setdone/${id}`)
+      .then(response => response.json())
+      .then(result => {
+        if (!result.response) {
+          //TODO
+        }
+      });
+  }
+
+  componentDidMount() {
+    this._getTasks();
+  };
+
+  handleTaskAddingDone(id) {
+    let newTasksState = this.state.tasks.slice();
+    for (var i = 0; i < newTasksState.length; i++) {
+      if (newTasksState[i].isLoading) {
+        newTasksState[i].id = id;
+        delete newTasksState[i].isLoading;
+        break;
+      }
+    }
+    this.setState({
+      tasks: newTasksState,
+    });
   }
 
   handleTaskAdding() {
     if (this.state.taskInput) {
+      this._addTask(this.state.taskInput, this.handleTaskAddingDone);
       let newTasksState = this.state.tasks.slice();
-      newTasksState.push(
-        {
-          text: this.state.taskInput,
-          isDone: false
-        }
-      );
+      newTasksState.push({
+        text: this.state.taskInput,
+        isDone: false,
+        isLoading: true,
+      });
       this.setState({
         tasks: newTasksState,
         taskInput: "",
@@ -40,10 +98,11 @@ export class TaskList extends React.Component{
     }
   }
 
-  handleTaskDeleting(index) {
+  handleTaskDeleting(id) {
+    this._deleteTask(id);
     let newTasksState = this.state.tasks.slice();
     for (var i = 0; i < newTasksState.length; i++) {
-      if (i == index) {
+      if (newTasksState[i].id == id) {
         newTasksState.splice(i, 1);
         break;
       }
@@ -53,10 +112,11 @@ export class TaskList extends React.Component{
     });
   }
 
-  handleTaskDone(index) {
+  handleTaskDone(id) {
+    this._setDoneTask(id);
     let newTasksState = this.state.tasks.slice();
     for (var i = 0; i < newTasksState.length; i++) {
-      if (i == index) {
+      if (newTasksState[i].id == id) {
         newTasksState[i].isDone = true;
         break;
       }
@@ -85,11 +145,22 @@ export class TaskList extends React.Component{
       return (
         <li className="item" key={i}>
           <Task text={task.text} isDone={task.isDone}/>
-          <span className="control-buttons">
-            <span className="glyphicon glyphicon-remove pull-right md-glyphicon" onClick={() => this.handleTaskDeleting(i)}></span>
+          <span className="control-buttons pull-right">
+          {task.isLoading ? (
+            <span className="glyphicon glyphicon-refresh md-glyphicon"></span>
+          ) : (
+            <span><span className="glyphicon glyphicon-remove md-glyphicon" onClick={() => this.handleTaskDeleting(task.id)}></span>
             {!task.isDone &&
-              <span className="glyphicon glyphicon-ok pull-right md-glyphicon" onClick={() => this.handleTaskDone(i)}></span>
+              <span className="glyphicon glyphicon-ok md-glyphicon" onClick={() => this.handleTaskDone(task.id)}></span>
             }
+            <span className="md-glyphicon">
+              <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0 0h24v24H0z" fill="none"/>
+                <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+              </svg>
+            </span></span>
+          )}
+
           </span>
         </li>
       );

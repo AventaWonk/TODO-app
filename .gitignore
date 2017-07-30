@@ -9,3 +9,6 @@ npm-debug.log
 # Ignore bootstap and jQuery folders
 /public/css
 /public/js
+
+# Ignore Apache config
+/public/.htaccess
