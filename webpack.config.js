@@ -10,15 +10,28 @@ const extractor = new ExtractTextPlugin({
 
 const config = {
   devtool: 'eval-source-map',
-  entry:  __dirname + '/src/js/main.js',
+  entry:  __dirname + '/src/js/index.js',
   output: {
     path: __dirname + '/public',
-    filename: jsOutputPath + 'main.js'
+    filename: jsOutputPath + 'bundle.js'
   },
   module: {
     rules: [
       {
         test: /\.js$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              presets: ['es2015'],
+              plugins: ["transform-react-jsx"]
+            }
+          }
+        ]
+      },
+      {
+        test: /\.jsx$/,
         exclude: /node_modules/,
         use: [
           {

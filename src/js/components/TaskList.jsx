@@ -1,8 +1,7 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import fetch from 'isomorphic-fetch';
 import 'es6-promise/auto';
-import {Task} from './task'
+import {Task} from './Task.jsx'
 
 export class TaskList extends React.Component{
   constructor(props) {
