@@ -4,10 +4,6 @@ import {TaskRow} from './TaskRow.jsx'
 
 export class TaskList extends React.Component{
 
-  componentDidMount() {
-    this.props.getTasks();
-  };
-
   render() {
     let tasks = this.props.tasks.map((task, i) =>
       <TaskRow task={task} key={i}
@@ -26,7 +22,6 @@ export class TaskList extends React.Component{
 
 TaskList.propTypes = {
   tasks: PropTypes.array,
-  getTasks: PropTypes.func,
   deleteTask: PropTypes.func,
   setTaskAsDone: PropTypes.func,
 }

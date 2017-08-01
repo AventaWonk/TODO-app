@@ -2,6 +2,7 @@ import React from 'react';
 import {TaskList} from './components/TaskList.jsx';
 import {TaskForm} from './components/TaskForm.jsx';
 import {_getTasks, _addTask, _setDoneTask, _deleteTask} from './actions/Actions.js'
+import TaskShell from './lib/TaskShell'
 
 export default class App extends React.Component{
   constructor(props) {
@@ -9,18 +10,33 @@ export default class App extends React.Component{
     this.state = {
       tasks: [],
     }
-    this.getTasks = this.getTasks.bind(this); 
+    this.addTask = this.addTask.bind(this);
     this.setTaskAsDone = this.setTaskAsDone.bind(this);
     this.deleteTask = this.deleteTask.bind(this);
-    this.handleTaskAdded = this.handleTaskAdded.bind(this); //from callback
+    this.onFailed = this.onFailed.bind(this);
   }
 
-  getTasks() {
-    _getTasks.bind(this)();
+  componentDidMount() {
+    let onResponseGot = (tasks) => {
+      this.setState({
+        tasks: tasks,
+      });
+    }
+    _getTasks(onResponseGot);
   }
 
   addTask(text) {
-    _addTask(text, this.handleTaskAdded);
+    let onTaskLoaded = (id) => {
+      let newTasksState = this.state.tasks.slice();
+      let i = TaskShell.getLoadingTask(id, newTasksState);
+      newTasksState[i].id = id;
+      delete newTasksState[i].isLoading;
+      this.setState({
+        tasks: newTasksState,
+      });
+    }
+
+    _addTask(text, onTaskLoaded, this.onFailed);
 
     let newTasksState = this.state.tasks.slice();
     newTasksState.push({
@@ -33,30 +49,12 @@ export default class App extends React.Component{
     });
   }
 
-  handleTaskAdded(id) {
-    let newTasksState = this.state.tasks.slice();
-    for (var i = 0; i < newTasksState.length; i++) {
-      if (newTasksState[i].isLoading) {
-        newTasksState[i].id = id;
-        delete newTasksState[i].isLoading;
-        break;
-      }
-    }
-    this.setState({
-      tasks: newTasksState,
-    });
-  }
-
   setTaskAsDone(id) {
     _setDoneTask(id);
 
     let newTasksState = this.state.tasks.slice();
-    for (var i = 0; i < newTasksState.length; i++) {
-      if (newTasksState[i].id == id) {
-        newTasksState[i].isDone = true;
-        break;
-      }
-    }
+    let i = TaskShell.getTaskIndexById(id, newTasksState);
+    newTasksState[i].isDone = true;
     this.setState({
       tasks: newTasksState,
     });
@@ -66,12 +64,15 @@ export default class App extends React.Component{
     _deleteTask(id);
 
     let newTasksState = this.state.tasks.slice();
-    for (var i = 0; i < newTasksState.length; i++) {
-      if (newTasksState[i].id == id) {
-        newTasksState.splice(i, 1);
-        break;
-      }
-    }
+    let i = TaskShell.getTaskIndexById(id, newTasksState);
+    newTasksState.splice(i, 1);
+    this.setState({
+      tasks: newTasksState,
+    });
+  }
+
+  onFailed() {
+    let newTasksState = TaskShell.deleteFailedTask(this.state.tasks);
     this.setState({
       tasks: newTasksState,
     });
@@ -80,11 +81,11 @@ export default class App extends React.Component{
   render() {
     return (
       <div>
-        <TaskList tasks={this.state.tasks} getTasks={this.getTasks}
+        <TaskList tasks={this.state.tasks}
           deleteTask={this.deleteTask}
           setTaskAsDone={this.setTaskAsDone}
         />
-        <TaskForm addTask={text => this.addTask(text)}/>
+        <TaskForm addTask={this.addTask}/>
       </div>
     );
   }
