@@ -56,6 +56,6 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(
-  null,
+  state => {return {state}},
   mapDispatchToProps
 )(TaskRow);
