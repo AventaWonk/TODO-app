@@ -1,7 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+import {addTask} from '../actions/index';
 
-export class TaskForm extends React.Component {
+class TaskForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -48,3 +51,14 @@ export class TaskForm extends React.Component {
 TaskForm.propTypes = {
   addTask: PropTypes.func,
 }
+
+function mapDispatchToProps(dispatch) {
+  return {
+    addTask: bindActionCreators(addTask, dispatch)
+  };
+}
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(TaskForm);

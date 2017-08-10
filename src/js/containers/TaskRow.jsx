@@ -1,8 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Task} from './Task.jsx';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {Task} from '../components/Task.jsx';
+import {deleteTask, setTaskAsDone} from '../actions/index';
 
-export class TaskRow extends React.Component {
+class TaskRow extends React.Component {
 
   handleTaskDelete(id) {
     this.props.deleteTask(id);
@@ -44,3 +47,15 @@ TaskRow.propTypes = {
   deleteTask: PropTypes.func,
   setTaskAsDone: PropTypes.func,
 }
+
+function mapDispatchToProps(dispatch) {
+  return {
+    deleteTask: bindActionCreators(deleteTask, dispatch),
+    setTaskAsDone: bindActionCreators(setTaskAsDone, dispatch)
+  };
+}
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(TaskRow);

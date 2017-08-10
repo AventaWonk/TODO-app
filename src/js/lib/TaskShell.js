@@ -1,6 +1,6 @@
 export default class TaskShell {
 
-  static getTaskIndexById(id, taskArray) {
+  static getTaskIndexById(taskArray, id) {
     for (let i = 0; i < taskArray.length; i++) {
       if (taskArray[i].id == id) {
         return i;
@@ -8,7 +8,7 @@ export default class TaskShell {
     }
   }
 
-  static getLoadingTask(id, taskArray) {
+  static getLoadingTaskIndex(taskArray) {
     for (let i = 0; i < taskArray.length; i++) {
       if (taskArray[i].isLoading) {
         return i;
@@ -16,7 +16,7 @@ export default class TaskShell {
     }
   }
 
-  static doWithTaskById(id, taskArray, callback) {
+  static doWithTaskById(taskArray, id, callback) {
     let newTaskArray = [...taskArray];
     for (let i = 0; i < array.length; i++) {
       if (newTaskArray[i].id == id) {
