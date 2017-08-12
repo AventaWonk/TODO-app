@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {Task} from '../components/Task.jsx';
+import Loading from '../components/Loading.jsx';
 import {deleteTask, setTaskAsDone} from '../actions/index';
 
 class TaskRow extends React.Component {
@@ -21,7 +22,7 @@ class TaskRow extends React.Component {
         <Task text={this.props.task.text} isDone={this.props.task.isDone}/>
         <span className="control-buttons pull-right">
           {this.props.task.isLoading ? (
-            <span className="glyphicon glyphicon-refresh md-glyphicon"></span>
+            <Loading size="small"/>
           ) : (
             <span>
               <span className="glyphicon glyphicon-remove md-glyphicon" onClick={() => this.handleTaskDelete(this.props.task.id)}></span>

@@ -1,11 +1,10 @@
 import React from 'react';
 
-export class Loading extends React.Component {
+export default class Loading extends React.Component {
   render() {
+    let style = `loading-indicator-${this.props.size}`;
     return (
-      <div className="cssload-container">
-        <div className="cssload-speeding-wheel"></div>
-      </div>
+      <div className={style}></div>
     );
   }
 }

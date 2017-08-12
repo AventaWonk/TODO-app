@@ -19,6 +19,9 @@ export function fetchTasks() {
       .then(data => data.response)
       .then(tasks => {
         dispatch({
+          type: types.LOADING_SUCCEED,
+        });
+        dispatch({
           type: types.RECEIVE_TASKS,
           tasks,
         });

@@ -130,25 +130,29 @@ body {
   }
 }
 
-.cssload-container {
-	width: 100%;
-	height: 63px;
-	text-align: center;
-}
-
-.cssload-speeding-wheel {
-	width: 63px;
-	height: 63px;
-	margin: 0 auto;
+.loading-indicator {
+  margin: 0 auto;
 	border: 4px solid $primary-color;
 	border-radius: 50%;
 	border-left-color: transparent;
 	border-right-color: transparent;
 	animation: cssload-spin 1400ms infinite linear;
-		-o-animation: cssload-spin 1400ms infinite linear;
-		-ms-animation: cssload-spin 1400ms infinite linear;
-		-webkit-animation: cssload-spin 1400ms infinite linear;
-		-moz-animation: cssload-spin 1400ms infinite linear;
+	-o-animation: cssload-spin 1400ms infinite linear;
+	-ms-animation: cssload-spin 1400ms infinite linear;
+	-webkit-animation: cssload-spin 1400ms infinite linear;
+	-moz-animation: cssload-spin 1400ms infinite linear;
+}
+.loading-indicator-big {
+	@extend .loading-indicator;
+  height: 60px;
+  width: 60px;
+}
+
+.loading-indicator-small {
+  @extend .loading-indicator;
+  height: 26px;
+  width: 26px;
+  border-width: 3px;
 }
 
 @keyframes cssload-spin {
