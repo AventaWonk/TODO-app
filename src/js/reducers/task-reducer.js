@@ -35,6 +35,21 @@ function setTaskAsDone(tasksState, id) {
   return newTaskState;
 }
 
+function editTaskText(tasksState, id) {
+  let newTaskState = [...tasksState];
+  let i = TaskShell.getTaskIndexById(newTaskState, id);
+  newTaskState[i].isChanging = true;
+  return newTaskState;
+}
+
+function changeTaskText(tasksState, id, newText) {
+  let newTaskState = [...tasksState];
+  let i = TaskShell.getTaskIndexById(newTaskState, id);
+  newTaskState[i].text = newText;
+  delete newTaskState[i].isChanging;
+  return newTaskState;
+}
+
 export default function (tasksState = [], action) {
   switch (action.type) {
     case types.RECEIVE_TASKS: return receiveTasks(tasksState, action.tasks);
@@ -42,6 +57,10 @@ export default function (tasksState = [], action) {
     case types.ADD_TASK_SUCCEED: return setTaskId(tasksState, action.id);
     case types.DELETE_TASK:  return removeTask(tasksState, action.id);
     case types.SET_TASK_DONE: return setTaskAsDone(tasksState, action.id);
+    case types.CHANGE_TASK_TEXT: return editTaskText(tasksState, action.id);
+    case types.CHANGE_TASK_TEXT_DONE: return changeTaskText(tasksState, action.id, action.newText);
+
+      break;
 
     /*
     * @TODO
@@ -49,6 +68,7 @@ export default function (tasksState = [], action) {
     * case types.ADD_TASK_FAILED:
     * case types.DELETE_TASK_FAILED:
     * case types.SET_TASK_DONE_FAILED:
+    * case types.CHANGE_TASK_FAILED:
     */
 
     default: return tasksState;

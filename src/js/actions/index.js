@@ -94,3 +94,30 @@ export function setTaskAsDone(id) {
       )
   };
 }
+
+export function editTaskText(id) {
+  return {
+    type: types.CHANGE_TASK_TEXT,
+    id
+  };
+}
+
+export function changeTaskText(id, newText) {
+  return (dispatch, getState) => {
+    dispatch({
+      type: types.CHANGE_TASK_TEXT_DONE,
+      id,
+      newText
+    });
+
+    return fetch(`http://localhost:8000/task/update/${id}/${newText}`)
+      .then(
+        response => response.json(),
+        error => {
+          dispatch({
+            type: types.CHANGE_TASK_TEXT_FAILED
+          });
+        }
+      )
+  };
+}
