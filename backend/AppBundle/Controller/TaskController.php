@@ -37,7 +37,10 @@ class TaskController extends Controller
           [new JsonEncoder()]
         );
 
-        $jsonTasks = $serializer->serialize($tasks, 'json');
+        $jsonTasks = $serializer->serialize(
+          ['response' => $tasks],
+          'json'
+        );
 
         $response = new Response();
         $response->headers->set('Content-Type', 'application/json');
@@ -56,6 +59,7 @@ class TaskController extends Controller
 
         $task = new Task();
         $task->setText($text);
+        $task->setIsDone(false);
         $task->setDate( new \DateTime());
 
         $em->persist($task);
@@ -64,7 +68,12 @@ class TaskController extends Controller
         $response = new Response();
         $response->headers->set('Content-Type', 'application/json');
         $response->headers->set('Access-Control-Allow-Origin', '*');
-        $response->setContent(1);
+
+        $response->setContent(
+          json_encode([
+            'response' => $task->getId(),
+          ])
+        );
         return $response;
     }
 
@@ -73,8 +82,9 @@ class TaskController extends Controller
      */
     public function updateAction($id, $text)
     {
-        $task = $this->getDoctrine()
-          ->getRepository(Task::class)
+        $em = $this->getDoctrine()
+          ->getManager();
+        $task = $em->getRepository(Task::class)
           ->findOneById($id);
 
         $response = new Response();
@@ -88,7 +98,9 @@ class TaskController extends Controller
             $em->flush();
 
 
-            $response->setContent(1);
+            $response->setContent([
+              'response' => 1,
+            ]);
             return $response;
           }
 
@@ -101,8 +113,9 @@ class TaskController extends Controller
      */
     public function deleteAction($id)
     {
-        $task = $this->getDoctrine()
-          ->getRepository(Task::class)
+        $em = $this->getDoctrine()
+          ->getManager();
+        $task = $em->getRepository(Task::class)
           ->findOneById($id);
 
         $response = new Response();
@@ -113,7 +126,39 @@ class TaskController extends Controller
           $em->remove($task);
           $em->flush();
 
-          $response->setContent(1);
+          $response->setContent([
+            'response' => 1,
+          ]);
+          return $response;
+        }
+
+        $response->setContent('error');
+        return $response;
+    }
+
+    /**
+     * @Route("task/setdone/{id}")
+     */
+    public function setDoneAction($id)
+    {
+        $em = $this->getDoctrine()
+          ->getManager();
+        $task = $em->getRepository(Task::class)
+          ->findOneById($id);
+
+        $response = new Response();
+        $response->headers->set('Content-Type', 'application/json');
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+
+        if ($task) {
+          $task->setIsDone(true);
+
+          $em->persist($task);
+          $em->flush();
+
+          $response->setContent([
+            'response' => 1,
+          ]);
           return $response;
         }
 
