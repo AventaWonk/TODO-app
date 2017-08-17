@@ -7,14 +7,6 @@ import Loading from '../components/Loading.jsx';
 import {deleteTask, setTaskAsDone, editTaskText, changeTaskText} from '../actions/index';
 
 class TaskRow extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      taskInputText: props.task.text,
-    }
-    this.handleTaskInputTextChanging = this.handleTaskInputTextChanging.bind(this);
-    this.handleKeyPress = this.handleKeyPress.bind(this);
-  }
 
   handleTaskDeleteClick(id) {
     this.props.deleteTask(id);
@@ -28,27 +20,10 @@ class TaskRow extends React.Component {
     this.props.editTaskText(id);
   }
 
-  handleTaskInputTextChanging(input) {
-    this.setState({
-      taskInputText: input.target.value,
-    });
-  }
-
-  handleKeyPress(key) {
-    if (key == 'Enter') {
-      this.props.changeTaskText(this.props.task.id, this.state.taskInputText);
-    }
-  }
-
   render() {
-    let task = <Task text={this.props.task.text} isDone={this.props.task.isDone}/>;
-    if (this.props.task.isChanging) {
-      task = <input className="md-input" type="text" value={this.state.taskInputText} onChange={this.handleTaskInputTextChanging} onKeyPress={event => this.handleKeyPress(event.key)}/>;
-    }
-
     return (
       <li className="item">
-        {task}
+        <Task text={this.props.task.text} isDone={this.props.task.isDone}/>
         <span className="control-buttons pull-right">
           {this.props.task.isLoading ? (
             <Loading size="small"/>
