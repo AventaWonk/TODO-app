@@ -35,10 +35,17 @@ function setTaskAsDone(tasksState, id) {
   return newTaskState;
 }
 
-function editTaskText(tasksState, id) {
+function editTask(tasksState, id) {
   let newTaskState = [...tasksState];
   let i = TaskShell.getTaskIndexById(newTaskState, id);
   newTaskState[i].isChanging = true;
+  return newTaskState;
+}
+
+function editTaskCancel(tasksState, id) {
+  let newTaskState = [...tasksState];
+  let i = TaskShell.getTaskIndexById(newTaskState, id);
+  delete newTaskState[i].isChanging;
   return newTaskState;
 }
 
@@ -57,10 +64,9 @@ export default function (tasksState = [], action) {
     case types.ADD_TASK_SUCCEED: return setTaskId(tasksState, action.id);
     case types.DELETE_TASK:  return removeTask(tasksState, action.id);
     case types.SET_TASK_DONE: return setTaskAsDone(tasksState, action.id);
-    case types.CHANGE_TASK_TEXT: return editTaskText(tasksState, action.id);
-    case types.CHANGE_TASK_TEXT_DONE: return changeTaskText(tasksState, action.id, action.newText);
-
-      break;
+    case types.EDIT_TASK: return editTask(tasksState, action.id);
+    case types.EDIT_TASK_CANCEL: return editTaskCancel(tasksState, action.id);
+    case types.CHANGE_TASK_TEXT: return changeTaskText(tasksState, action.id, action.newText);
 
     /*
     * @TODO

@@ -80,6 +80,28 @@ body {
 .md-list {
   list-style-type: none;
   padding: 5px;
+
+  .item {
+    padding: 15px 0;
+
+    .task {
+      padding: 0 20px;
+
+      .text{
+        font-size: 16px;
+        letter-spacing: .03em;
+      }
+    }
+
+    .md-input {
+      font-size: 17px;
+      margin-left: 20px;
+    }
+
+    .control-buttons {
+      font-size: 16px;
+    }
+  }
 }
 
 .md-form {
@@ -95,23 +117,6 @@ body {
 .md-glyphicon {
   padding: 3px 0px 0px 17px;
   cursor: pointer;
-}
-
-.item {
-  padding: 15px 0;
-
-  .control-buttons {
-    font-size: 16px;
-  }
-}
-
-.task {
-  padding: 0 20px;
-
-  .text{
-    font-size: 16px;
-    letter-spacing: .03em;
-  }
 }
 
 .done{

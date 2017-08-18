@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import TaskRow from './TaskRow.jsx'
-import EditRow from './TaskRow.jsx'
+import EditRow from './EditRow.jsx'
 import Loading from '../components/Loading.jsx'
 import {fetchTasks} from '../actions/index'
 
@@ -22,7 +22,7 @@ class TaskList extends React.Component{
 
     let tasks = this.props.tasks.map((task, i) => {
       if (!task.isChanging) {
-        return  <TaskRow task={task} key={i}/>;
+        return <TaskRow task={task} key={i}/>;
       }
       return <EditRow task={task} key={i}/>;
     });

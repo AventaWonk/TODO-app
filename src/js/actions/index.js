@@ -95,9 +95,16 @@ export function setTaskAsDone(id) {
   };
 }
 
-export function editTaskText(id) {
+export function editTask(id) {
   return {
-    type: types.CHANGE_TASK_TEXT,
+    type: types.EDIT_TASK,
+    id
+  };
+}
+
+export function editTaskCancel(id) {
+  return {
+    type: types.EDIT_TASK_CANCEL,
     id
   };
 }
@@ -105,7 +112,7 @@ export function editTaskText(id) {
 export function changeTaskText(id, newText) {
   return (dispatch, getState) => {
     dispatch({
-      type: types.CHANGE_TASK_TEXT_DONE,
+      type: types.CHANGE_TASK_TEXT,
       id,
       newText
     });
