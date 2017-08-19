@@ -65,6 +65,12 @@ EditRow.propTypes = {
   cancelEdit: PropTypes.func,
 }
 
+function mapStateToProps(state, ownProps) {
+  return {
+    ownProps
+  };
+}
+
 function mapDispatchToProps(dispatch) {
   return {
     confirmEdit: bindActionCreators(actions.changeTaskText, dispatch),
@@ -73,8 +79,6 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(
-  state => {
-    return {state}
-  },
+  mapStateToProps,
   mapDispatchToProps
 )(EditRow);

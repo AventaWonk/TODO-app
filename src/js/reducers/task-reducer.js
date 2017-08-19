@@ -21,10 +21,24 @@ function setTaskId(tasksState, id) {
   return newTaskState;
 }
 
-function removeTask(tasksState, id) {
+function markTaskAsRemoved(tasksState, id) {
+  let newTaskState = [...tasksState];
+  let i = TaskShell.getTaskIndexById(newTaskState, id);
+  newTaskState[i].isRemoved = true;
+  return newTaskState;
+}
+
+function deleteMarkedTask(tasksState, id) {
   let newTaskState = [...tasksState];
   let i = TaskShell.getTaskIndexById(newTaskState, id);
   newTaskState.splice(i, 1);
+  return newTaskState;
+}
+
+function restoreMarkedTask(tasksState, id) {
+  let newTaskState = [...tasksState];
+  let i = TaskShell.getTaskIndexById(newTaskState, id);
+  delete newTaskState[i].isRemoved;
   return newTaskState;
 }
 
@@ -62,7 +76,10 @@ export default function (tasksState = [], action) {
     case types.RECEIVE_TASKS: return receiveTasks(tasksState, action.tasks);
     case types.ADD_TASK: return addTask(tasksState, action.text);
     case types.ADD_TASK_SUCCEED: return setTaskId(tasksState, action.id);
-    case types.DELETE_TASK:  return removeTask(tasksState, action.id);
+    case types.ADD_TASK_FAILED: return removeTask(tasksState, action.id);
+    case types.DELETE_TASK:  return markTaskAsRemoved(tasksState, action.id);
+    case types.DELETE_TASK_SUCCEED:  return deleteMarkedTask(tasksState, action.id);
+    case types.DELETE_TASK_FAILED:  return restoreMarkedTask(tasksState, action.id);
     case types.SET_TASK_DONE: return setTaskAsDone(tasksState, action.id);
     case types.EDIT_TASK: return editTask(tasksState, action.id);
     case types.EDIT_TASK_CANCEL: return editTaskCancel(tasksState, action.id);
@@ -71,7 +88,6 @@ export default function (tasksState = [], action) {
     /*
     * @TODO
     *
-    * case types.ADD_TASK_FAILED:
     * case types.DELETE_TASK_FAILED:
     * case types.SET_TASK_DONE_FAILED:
     * case types.CHANGE_TASK_FAILED:

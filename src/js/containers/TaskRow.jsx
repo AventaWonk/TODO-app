@@ -64,6 +64,12 @@ TaskRow.propTypes = {
   changeTask: PropTypes.func,
 }
 
+function mapStateToProps(state, ownProps) {
+  return {
+    ownProps
+  };
+}
+
 function mapDispatchToProps(dispatch) {
   return {
     deleteTask: bindActionCreators(deleteTask, dispatch),
@@ -73,8 +79,6 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(
-  state => {
-    return {state}
-  },
+  mapStateToProps,
   mapDispatchToProps
 )(TaskRow);

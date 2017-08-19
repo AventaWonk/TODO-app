@@ -21,10 +21,12 @@ class TaskList extends React.Component{
     }
 
     let tasks = this.props.tasks.map((task, i) => {
-      if (!task.isChanging) {
+      if (!task.isRemoved) {
+        if (task.isChanging) {
+          return <EditRow task={task} key={i}/>;
+        }
         return <TaskRow task={task} key={i}/>;
       }
-      return <EditRow task={task} key={i}/>;
     });
 
     return (

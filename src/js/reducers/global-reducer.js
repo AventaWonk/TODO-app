@@ -10,6 +10,12 @@ export default function (state = INITIAL_STATE, action) {
       return Object.assign(state, {
           isLoading: false
       });
+    case types.LOADING_FAILED:
+    return Object.assign(state, {
+        isLoading: false,
+        loadingFailed: true,
+    });
+      break;
     default:
       return state;
   }

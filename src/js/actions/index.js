@@ -69,10 +69,24 @@ export function deleteTask(id) {
         response => response.json(),
         error => {
           dispatch({
-            type: types.DELETE_TASK_FAILED
+            type: types.DELETE_TASK_FAILED,
+            id
           });
         }
       )
+      .then(code => {
+        if (code == 1) {
+          return types.DELETE_TASK_SUCCEED;
+        } else {
+          return types.DELETE_TASK_FAILED;
+        }
+      })
+      .then(type => {
+        dispatch({
+          type: type,
+          id
+        });
+      });
   };
 }
 
